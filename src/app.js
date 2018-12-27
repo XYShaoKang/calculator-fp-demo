@@ -34,65 +34,28 @@ export default class App {
   }
   onclick = e => {
     if (e.target.nodeName === 'BUTTON') {
+      const { data, history } = this.state
       const value = $(e.target).html()
       if (!/AC|=/.test(value)) {
-        this.setData(value)
+        this.state.data = fpSetData(value, data)
       } else if (/=/.test(value)) {
-        this.calculate()
+        const exp = data
+          .map(a => (isOper(a[0]) ? a[0] : parseFloat(a.join(''))))
+          .join('')
+        history.push(exp + '=')
+        const result = calculate(exp)
+        if (result !== result) {
+          this.state.data = [[`Error`]]
+        } else {
+          this.state.data = [[`${result}`]]
+        }
       } else if (/AC/.test(value)) {
         this.allClean()
       }
       this.render()
     }
   }
-  /**
-   * 添加数字,点和运算符到 state 数据中
-   *
-   * @param {*} value
-   * @memberof App
-   */
-  setData(value) {
-    let { data } = this.state
-    const { isOper, isNum, isDot } = this
-    let arr = _.last(data)
-    if (isOper(value)) {
-      if (isOper(arr[0])) {
-        arr[0] = value
-      } else {
-        data.push([value])
-      }
-    } else if (isNum(value)) {
-      if (isOper(arr[0])) {
-        data.push([value])
-      } else if (arr[0] === '0' && arr.length === 1) {
-        arr[0] = value
-      } else {
-        arr.push(value)
-      }
-    } else if (isDot(value)) {
-      if (isOper(arr[0])) {
-        data.push(['0', value])
-      } else if (!isDot(arr.join(''))) {
-        arr.push(value)
-      }
-    }
-  }
-  /**
-   * 计算最终结构
-   *
-   * @memberof App
-   */
-  calculate() {
-    let { data, history } = this.state
-    const { isOper } = this
-    if (!isOper(_.last(data))) {
-      const exp = data
-        .map(a => (isOper(a[0]) ? a[0] : parseFloat(a.join(''))))
-        .join('')
-      history.push(exp + '=')
-      this.state.data = [[`${math.number(math.eval(exp))}`]]
-    }
-  }
+
   /**
    * 清零
    *
@@ -105,22 +68,7 @@ export default class App {
   createButton(str) {
     return $(`<button>${str}</button>`)
   }
-  /**
-   * 判断是否为运算符
-   *
-   * @param {*} value
-   * @returns
-   * @memberof App
-   */
-  isOper(value) {
-    return /\+|\-|\*|\//.test(value)
-  }
-  isNum(value) {
-    return /\d/.test(value)
-  }
-  isDot(value) {
-    return /\./.test(value)
-  }
+
   render() {
     const display = _.compose(
       _.join(''),
@@ -130,3 +78,66 @@ export default class App {
     $(this.display.children()[1]).html(display)
   }
 }
+/**
+ * 计算最终结构
+ *
+ * @memberof App
+ */
+function calculate(exp) {
+  // let { data, history } = this.state
+  // if (!isOper(_.last(data))) {
+  //   history.push(exp + '=')
+  //   this.state.data = [[`${math.number(math.eval(exp))}`]]
+  // }
+  return math.number(math.eval(exp))
+}
+function fpSetData(value, data) {
+  const tempData = [...data]
+  let arr = [...tempData.pop()]
+  if (arr[0] === 'Error') {
+    arr = ['0']
+  }
+  if (isOper(value)) {
+    if (isOper(arr[0])) {
+      arr[0] = value
+      tempData.push(arr)
+    } else {
+      tempData.push(arr, [value])
+    }
+  } else if (isNum(value)) {
+    if (isOper(arr[0])) {
+      tempData.push(arr, [value])
+    } else if (arr[0] === '0' && arr.length === 1) {
+      arr[0] = value
+      tempData.push(arr)
+    } else {
+      arr.push(value)
+      tempData.push(arr)
+    }
+  } else if (isDot(value)) {
+    if (isOper(arr[0])) {
+      tempData.push(arr, ['0', value])
+    } else if (!isDot(arr.join(''))) {
+      arr.push(value)
+      tempData.push(arr)
+    }
+  }
+  return tempData
+}
+/**
+ * 判断是否为运算符
+ *
+ * @param {*} value
+ * @returns
+ * @memberof App
+ */
+function isOper(value) {
+  return /\+|\-|\*|\//.test(value)
+}
+function isNum(value) {
+  return /\d/.test(value)
+}
+function isDot(value) {
+  return /\./.test(value)
+}
+export { isOper, isNum, isDot, fpSetData, calculate }
