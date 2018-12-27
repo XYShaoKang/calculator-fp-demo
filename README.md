@@ -14,3 +14,9 @@ $ cd calculator-fp-demo
 $ yarn install
 $ yarn start
 ```
+
+## TODO
+
+- [ ] 抽离耦合逻辑
+- [ ] 使用函数式重构
+- [ ] 完善测试覆盖
