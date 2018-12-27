@@ -17,6 +17,13 @@ module.exports = smp.wrap({
   module: {
     rules: [
       {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
         test: /\.less$/,
         use: [
           {

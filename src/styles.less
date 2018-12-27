@@ -1,7 +1,31 @@
 body{
   #root{
-    width: 100px;
-    height: 100px;
+    width: 300px;
+    // height: 500px;
     border: 1px solid #000;
+    padding: 10px;
+    background: rgb(214, 214, 214);
+    #display{
+      width: 100%;
+      height: 50px;
+      border: 1px solid #345;
+      background: #fff;
+      text-align: right;
+      p{
+        display: block;
+        height: 40%;
+        margin: 2px;
+        padding: 0;
+      }
+    }
+    #operation{
+      display: grid;
+      grid-template-columns: 25% 25% 25% 25%;
+      margin: 10px 0;
+      button{
+        height: 30px;
+        margin:  2px;
+      }
+    }
   }
 }
