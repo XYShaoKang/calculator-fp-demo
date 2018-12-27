@@ -45,9 +45,15 @@ export default class App {
       this.render()
     }
   }
+  /**
+   * 添加数字,点和运算符到 state 数据中
+   *
+   * @param {*} value
+   * @memberof App
+   */
   setData(value) {
     let { data } = this.state
-    const { isOper } = this
+    const { isOper, isNum, isDot } = this
     let arr = _.last(data)
     if (isOper(value)) {
       if (isOper(arr[0])) {
@@ -55,7 +61,7 @@ export default class App {
       } else {
         data.push([value])
       }
-    } else if (/\d/.test(value)) {
+    } else if (isNum(value)) {
       if (isOper(arr[0])) {
         data.push([value])
       } else if (arr[0] === '0' && arr.length === 1) {
@@ -63,14 +69,19 @@ export default class App {
       } else {
         arr.push(value)
       }
-    } else if (/\./.test(value)) {
+    } else if (isDot(value)) {
       if (isOper(arr[0])) {
         data.push(['0', value])
-      } else if (!/\./.test(arr.join(''))) {
+      } else if (!isDot(arr.join(''))) {
         arr.push(value)
       }
     }
   }
+  /**
+   * 计算最终结构
+   *
+   * @memberof App
+   */
   calculate() {
     let { data, history } = this.state
     const { isOper } = this
@@ -82,6 +93,11 @@ export default class App {
       this.state.data = [[`${math.number(math.eval(exp))}`]]
     }
   }
+  /**
+   * 清零
+   *
+   * @memberof App
+   */
   allClean() {
     this.state.data = [['0']]
     this.state.history = ['']
@@ -89,8 +105,21 @@ export default class App {
   createButton(str) {
     return $(`<button>${str}</button>`)
   }
+  /**
+   * 判断是否为运算符
+   *
+   * @param {*} value
+   * @returns
+   * @memberof App
+   */
   isOper(value) {
     return /\+|\-|\*|\//.test(value)
+  }
+  isNum(value) {
+    return /\d/.test(value)
+  }
+  isDot(value) {
+    return /\./.test(value)
   }
   render() {
     const display = _.compose(
