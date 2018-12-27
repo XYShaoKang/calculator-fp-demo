@@ -63,9 +63,9 @@ export default class App {
       } else {
         arr.push(value)
       }
-    } else {
+    } else if (/\./.test(value)) {
       if (isOper(arr[0])) {
-        data.push([value])
+        data.push(['0', value])
       } else if (!/\./.test(arr.join(''))) {
         arr.push(value)
       }
@@ -97,7 +97,6 @@ export default class App {
       _.join(''),
       _.map(_.join('')),
     )(this.state.data)
-    console.log(this.display.children()[0])
     $(this.display.children()[0]).html(_.last(this.state.history))
     $(this.display.children()[1]).html(display)
   }
