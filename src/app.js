@@ -36,9 +36,7 @@ export default class App {
       if (!/AC|=/.test(value)) {
         this.state.data = fpSetData(value, data)
       } else if (/=/.test(value)) {
-        const exp = data
-          .map(a => (isOper(a[0]) ? a[0] : parseFloat(a.join(''))))
-          .join('')
+        const exp = _.flatten(data).join('')
         history.push(exp + '=')
         const result = calculate(exp)
         if (result !== result) {

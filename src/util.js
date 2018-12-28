@@ -13,45 +13,65 @@ const calculate = _.compose(
   math.eval,
 )
 
+const lastFirst = _.compose(
+  _.prop(0),
+  _.last,
+)
+const concatDot = _.compose(
+  isDot,
+  _.join(''),
+)
+const lastIsOper = _.flip(
+  _.pipe(
+    lastFirst,
+    isOper,
+  ),
+)
+const updataLast = _.pipe(
+  _.of,
+  _.update(-1),
+)
+const concatNewLast = (oper, data) => data.concat([[oper]])
+
+const addOper = _.ifElse(lastIsOper, updataLast, concatNewLast)
+
+const addDot = data => {
+  if (isOper(lastFirst(data))) {
+    return data.concat([['0', '.']])
+  } else if (!concatDot(_.last(data))) {
+    return _.update(-1, _.last(data).concat('.'), data)
+  }
+}
+function addNum(value, data) {
+  if (isOper(lastFirst(data))) {
+    return data.concat([value])
+  } else {
+    const last = _.pipe(
+      _.join(''),
+      parseFloat,
+      _.toString,
+      _.split(''),
+    )(_.last(data).concat(value))
+    return _.update(-1, last, data)
+  }
+}
+
 function fpSetData(value, data) {
-  const tempData = [...data]
-  let arr = [...tempData.pop()]
+  const tempData = [...data.map(a => [...a])]
+  let arr = _.last(tempData)
   if (arr[0] === 'Error') {
-    arr = ['0']
+    arr[0] = '0'
   }
 
-  const lastIsZero = arr.join('') === '0'
-  const lastIsOper = isOper(arr[0])
-  const lastConcatDot = isDot(arr.join(''))
-  const valueIsNum = isNum(value)
-  const valueIsOper = isOper(value)
-  const valueIsDot = isDot(value)
-
-  // 当传入数字并且最后以为不是运算符
-  if ((valueIsNum && lastIsZero) || (valueIsOper && lastIsOper)) {
-    arr = [value]
+  if (isOper(value)) {
+    return addOper(value, tempData)
   }
-
-  if (
-    !lastIsOper &&
-    ((valueIsNum && !lastIsZero) || (valueIsDot && !lastConcatDot))
-  ) {
-    arr = arr.concat(value)
+  if (isDot(value)) {
+    return addDot(tempData)
   }
-
-  tempData.push(arr)
-
-  // 当传入点冰球最后一位是运算符
-  if (valueIsDot && lastIsOper) {
-    tempData.push(['0', value])
+  if (isNum(value)) {
+    return addNum(value, tempData)
   }
-
-  // 当传入运算符并且最后一位不是运算符,或者传入数字并且最后以为是运算符
-  if ((valueIsOper && !lastIsOper) || (valueIsNum && lastIsOper)) {
-    tempData.push([value])
-  }
-
-  return tempData
 }
 
 export { isOper, isNum, isDot, fpSetData, calculate }
