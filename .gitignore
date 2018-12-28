@@ -1,6 +1,9 @@
 # dependencies
 /node_modules
 
+# 覆盖率测试报告
+/coverage
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

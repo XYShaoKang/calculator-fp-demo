@@ -20,29 +20,35 @@ function fpSetData(value, data) {
     arr = ['0']
   }
 
-  // 当传入运算符并且最后一位不是运算符,或者传入数字并且最后以为是运算符
-  if ((isOper(value) && !isOper(arr[0])) || (isNum(value) && isOper(arr[0]))) {
-    tempData.push(arr, [value])
-  }
+  const lastIsZero = arr.join('') === '0'
+  const lastIsOper = isOper(arr[0])
+  const lastConcatDot = isDot(arr.join(''))
+  const valueIsNum = isNum(value)
+  const valueIsOper = isOper(value)
+  const valueIsDot = isDot(value)
 
   // 当传入数字并且最后以为不是运算符
-  if (isNum(value) && !isOper(arr[0])) {
-    tempData.push(`${parseFloat(arr.concat(value).join(''))}`.split(''))
+  if ((valueIsNum && lastIsZero) || (valueIsOper && lastIsOper)) {
+    arr = [value]
   }
 
-  // 当传入运算符并且最后一位是运算符
-  if (isOper(value) && isOper(arr[0])) {
-    tempData.push([value])
+  if (
+    !lastIsOper &&
+    ((valueIsNum && !lastIsZero) || (valueIsDot && !lastConcatDot))
+  ) {
+    arr = arr.concat(value)
   }
+
+  tempData.push(arr)
 
   // 当传入点冰球最后一位是运算符
-  if (isDot(value) && isOper(arr[0])) {
-    tempData.push(arr, ['0', value])
+  if (valueIsDot && lastIsOper) {
+    tempData.push(['0', value])
   }
 
-  // 当传入点,并且最后一位中不包含点
-  if (isDot(value) && !isDot(arr.join(''))) {
-    tempData.push(arr.concat(value))
+  // 当传入运算符并且最后一位不是运算符,或者传入数字并且最后以为是运算符
+  if ((valueIsOper && !lastIsOper) || (valueIsNum && lastIsOper)) {
+    tempData.push([value])
   }
 
   return tempData

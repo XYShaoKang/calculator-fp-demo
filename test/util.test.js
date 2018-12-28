@@ -48,7 +48,7 @@ describe('test isOper', () => {
     expect(isOper('.')).toBe(false)
   })
 })
-describe('test fpSetData', () => {
+describe.only('test fpSetData', () => {
   it('Add a number to the initial data', () => {
     const initData = createFreeData([['0']])
     const result = fpSetData('1', initData)
@@ -85,6 +85,15 @@ describe('test fpSetData', () => {
     expect(JSON.stringify(result)).toBe(
       JSON.stringify([['1', '3'], ['-'], ['0', '.'], ['+'], ['3', '2']]),
     )
+  })
+  it(`Add '1' to the [['Error']]`, async () => {
+    const initData = createFreeData([['Error']])
+    const addDatas = ['1']
+    const result = addDatas.reduce((a, b) => {
+      a = createFreeData(fpSetData(b, a))
+      return a
+    }, initData)
+    expect(JSON.stringify(result)).toBe(JSON.stringify([['1']]))
   })
 })
 

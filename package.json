@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open",
     "build": "webpack"
