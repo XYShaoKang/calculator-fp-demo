@@ -1,5 +1,4 @@
-import { isDot, isNum, isOper, fpSetData, calculate } from '../src/app'
-import { Map } from 'immutable'
+import { isDot, isNum, isOper, fpSetData, calculate } from '../src/util'
 
 describe('test isDot', () => {
   it('Returns true when a dot is passed in', () => {

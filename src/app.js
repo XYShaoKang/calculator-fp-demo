@@ -1,10 +1,7 @@
 import $ from 'jquery'
 import * as _ from 'ramda'
-import math from 'mathjs'
+import { isOper, fpSetData, calculate } from './util'
 
-math.config({
-  number: 'BigNumber',
-})
 export default class App {
   constructor(rootElement) {
     this.rootElement = rootElement
@@ -55,7 +52,6 @@ export default class App {
       this.render()
     }
   }
-
   /**
    * 清零
    *
@@ -68,7 +64,6 @@ export default class App {
   createButton(str) {
     return $(`<button>${str}</button>`)
   }
-
   render() {
     const display = _.compose(
       _.join(''),
@@ -78,66 +73,3 @@ export default class App {
     $(this.display.children()[1]).html(display)
   }
 }
-/**
- * 计算最终结构
- *
- * @memberof App
- */
-function calculate(exp) {
-  // let { data, history } = this.state
-  // if (!isOper(_.last(data))) {
-  //   history.push(exp + '=')
-  //   this.state.data = [[`${math.number(math.eval(exp))}`]]
-  // }
-  return math.number(math.eval(exp))
-}
-function fpSetData(value, data) {
-  const tempData = [...data]
-  let arr = [...tempData.pop()]
-  if (arr[0] === 'Error') {
-    arr = ['0']
-  }
-  if (isOper(value)) {
-    if (isOper(arr[0])) {
-      arr[0] = value
-      tempData.push(arr)
-    } else {
-      tempData.push(arr, [value])
-    }
-  } else if (isNum(value)) {
-    if (isOper(arr[0])) {
-      tempData.push(arr, [value])
-    } else if (arr[0] === '0' && arr.length === 1) {
-      arr[0] = value
-      tempData.push(arr)
-    } else {
-      arr.push(value)
-      tempData.push(arr)
-    }
-  } else if (isDot(value)) {
-    if (isOper(arr[0])) {
-      tempData.push(arr, ['0', value])
-    } else if (!isDot(arr.join(''))) {
-      arr.push(value)
-      tempData.push(arr)
-    }
-  }
-  return tempData
-}
-/**
- * 判断是否为运算符
- *
- * @param {*} value
- * @returns
- * @memberof App
- */
-function isOper(value) {
-  return /\+|\-|\*|\//.test(value)
-}
-function isNum(value) {
-  return /\d/.test(value)
-}
-function isDot(value) {
-  return /\./.test(value)
-}
-export { isOper, isNum, isDot, fpSetData, calculate }
