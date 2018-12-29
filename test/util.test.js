@@ -64,6 +64,15 @@ describe.only('test fpSetData', () => {
     const result = fpSetData('+', initData)
     expect(JSON.stringify(result)).toBe(JSON.stringify([['0'], ['+']]))
   })
+  it(`Add '1,-,3' to the initial data`, () => {
+    const initData = createFreeData([['0']])
+    const addDatas = ['1', '-', '3']
+    const result = addDatas.reduce((a, b) => {
+      a = createFreeData(fpSetData(b, a))
+      return a
+    }, initData)
+    expect(JSON.stringify(result)).toBe(JSON.stringify([['1'], ['-'], ['3']]))
+  })
   it(`Add '1,3,-,3,2' to the initial data`, () => {
     const initData = createFreeData([['0']])
     const addDatas = ['1', '3', '-', '3', '2']
