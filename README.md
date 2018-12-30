@@ -1,6 +1,6 @@
 # 练习用函数式写一个计算器
 
-[![Build Status](https://travis-ci.org/XYShaoKang/calculator-fp-demo.svg?branch=master)](https://travis-ci.org/XYShaoKang/calculator-fp-demo)
+[![Build Status](https://travis-ci.org/XYShaoKang/calculator-fp-demo.svg?branch=master)](https://travis-ci.org/XYShaoKang/calculator-fp-demo)[![codecov](https://codecov.io/gh/XYShaoKang/calculator-fp-demo/branch/master/graph/badge.svg)](https://codecov.io/gh/XYShaoKang/calculator-fp-demo)
 
 花了几天时间把数据添加到数组的操作函数重构了下 :sweat_smile:
 
@@ -28,6 +28,6 @@ $ yarn test
 
 ## TODO
 
-- [X] 抽离耦合逻辑
-- [X] 使用函数式重构
-- [X] 完善测试覆盖
+- [x] 抽离耦合逻辑
+- [x] 使用函数式重构
+- [x] 完善测试覆盖
