@@ -7,11 +7,11 @@ export default class App {
     this.rootElement = rootElement
     this.displayElement = $('<div id="display" ><p>1</p><p>2</p></div>')
     this.state = {
-      // ???????
+      // 所有操作按钮
       opers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.', '+', '-', '*', '/', '=', 'AC'],
-      // ?????????
+      // 计算器当前操作数据
       data: [['0']],
-      // ????
+      // 历史计算表达式
       history: [''],
     }
     this.init()
@@ -37,16 +37,16 @@ export default class App {
   }
   onclick = e => {
     if (e.target.nodeName === 'BUTTON') {
-      // ??????
+      // 点击操作按钮
       const { state, allClean, render } = this
       const { data, history } = state
       const value = $(e.target).html()
 
       if (!/AC|=/.test(value)) {
-        // ?? ? ???
+        // 点 数字 运算符
         this.state.data = pushValue(value, data)
       } else if (/=/.test(value)) {
-        // ??
+        // 等号
         const exp = flattenJoin('')(data)
         history.push(exp + '=')
 
@@ -58,7 +58,7 @@ export default class App {
           state.data = [[`${result}`]]
         }
       } else if (/AC/.test(value)) {
-        // ??
+        // 清零
         allClean()
       }
       render()

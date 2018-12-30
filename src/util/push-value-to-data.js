@@ -10,16 +10,15 @@ const lastIsError = _.pipe(
   _.equals('Error'),
 )
 
-const getAddOper = () => pushOper
-const getAddDot = () => _.flip(pushDot)
-const getAddNum = () => pushNum
+const getPushOper = () => pushOper
+const getPushDot = () => _.flip(pushDot)
+const gePushNum = () => pushNum
 
-// TODO:完善分支判断
 // a -> b
-const getAddFn = _.ifElse(
+const getPushFn = _.ifElse(
   isOper,
-  getAddOper,
-  _.ifElse(isDot, getAddDot, getAddNum),
+  getPushOper,
+  _.ifElse(isDot, getPushDot, gePushNum),
 )
 // [[a]] -> [[a]]
 const replaceError = _.when(lastIsError, updateItem('0'))
@@ -31,5 +30,5 @@ const getNewData = _.flip(
   ),
 )
 // a -> [[a]] -> [[a]]
-const pushValue = _.converge(_.call, [getAddFn, _.identity, getNewData])
+const pushValue = _.converge(_.call, [getPushFn, _.identity, getNewData])
 export { pushValue }
