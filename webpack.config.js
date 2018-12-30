@@ -10,7 +10,7 @@ module.exports = smp.wrap({
   entry: {
     app: './src/index.js',
   },
-  devtool: 'inline-source-map', // 映射源代码
+  // devtool: 'inline-source-map', // 映射源代码
   devServer: {
     contentBase: './dist',
   },
@@ -50,5 +50,5 @@ module.exports = smp.wrap({
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  mode: 'development', // 提高编译性能
+  mode: 'development', // 提高编译性能 mode 配置选项,提供不同的内置优化 development production none
 })
