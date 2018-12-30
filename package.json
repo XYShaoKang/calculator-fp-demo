@@ -11,11 +11,7 @@
   },
   "jest": {
     "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "html"
-    ]
+    "collectCoverage": true
   },
   "author": "XYShaoKang <zengwenjie03@gmail.com>",
   "license": "MIT",
