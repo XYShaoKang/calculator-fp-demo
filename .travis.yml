@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - '8'
+  - '10'
+brancher:
+  only:
+    - 'master'
+install:
+  - 'yarn install'
+  - 'yarn global add codecov'
+script:
+  - 'yarn test'
+  - 'codecov'
