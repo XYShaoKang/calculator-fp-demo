@@ -42,7 +42,7 @@ module.exports = smp.wrap({
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Output Management',
+      title: 'Calculator',
       favicon: 'src/favicon.ico',
     }),
   ],
