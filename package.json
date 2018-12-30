@@ -9,6 +9,14 @@
     "start": "webpack-dev-server --open",
     "build": "webpack"
   },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "html"
+    ]
+  },
   "author": "XYShaoKang <zengwenjie03@gmail.com>",
   "license": "MIT",
   "devDependencies": {
