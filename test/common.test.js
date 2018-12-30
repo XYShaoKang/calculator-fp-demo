@@ -7,6 +7,7 @@ import {
   flipConcat,
   appendItem,
   updateItem,
+  flattenJoin,
 } from '../src/util/common'
 describe('test isDot', () => {
   it('Returns true when a dot is passed in', () => {
@@ -101,5 +102,11 @@ describe('test updateItem', () => {
   it(`Returns [['1']] when ('1', [['0']]) is passend in`, () => {
     const result = updateItem('1', [['0']])
     expect(JSON.stringify(result)).toBe(JSON.stringify([['1']]))
+  })
+})
+describe('test flattenJoin', () => {
+  it(`Returns '11+2' when '' and [['1', '1'], ['+'], ['2']] is passend in`, () => {
+    const result = flattenJoin('')([['1', '1'], ['+'], ['2']])
+    expect(result).toBe('11+2')
   })
 })
